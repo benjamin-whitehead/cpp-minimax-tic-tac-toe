@@ -75,6 +75,7 @@ void GameLoop()
     Agent agent;
     while (true)
     {
+        cout << endl;
         char winner = CheckWinner(gameBoard);
         if (winner == 'X' || winner == 'O')
         {
@@ -86,15 +87,16 @@ void GameLoop()
             cout << "there was a tie!" << endl;
             break;
         }
-        cout << "Enter a position in [0, 8]: " << endl;
-        int position;
+
         if (currentPlayer == MINIMIZING)
         {
+            cout << "Enter a position in [0, 8]: ";
+            int position;
             cin >> position;
             if (cin.fail())
             {
                 cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(),'\n');
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid Input: Unrecognized Input" << endl;
                 cin >> position;
             }

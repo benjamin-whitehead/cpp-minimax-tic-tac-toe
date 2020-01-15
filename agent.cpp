@@ -56,15 +56,19 @@ char CheckWinner(char gameBoard[3][3])
     return winner;
 }
 
+/**
+ * Calculates the score of all possible game states and returns either the largest or smallest score
+ *
+ * @param char[][], the actual gameboard, int, the current depth of the operation, Players, the current players turn
+ * @return int, a min or max score
+ */
 int minimax(char board[3][3], int depth, Players cPlayer)
 {
-
     char result = CheckWinner(board);
     if (result == 'X' || result == 'O' || result == 'T')
     {
         return scoreTable.at(result);
     }
-
     if (cPlayer == MAXIMIZING)
     {
         int bestScore = INT_MIN;
@@ -84,7 +88,6 @@ int minimax(char board[3][3], int depth, Players cPlayer)
         }
         return bestScore;
     }
-
     if (cPlayer == MINIMIZING)
     {
         int bestScore = INT_MAX;
@@ -94,7 +97,7 @@ int minimax(char board[3][3], int depth, Players cPlayer)
             {
                 if (board[i][j] == ' ')
                 {
-                    board[i][j] = 'Y';
+                    board[i][j] = 'O';
                     int score = minimax(board, depth + 1, MAXIMIZING);
                     board[i][j] = ' ';
                     if (score < bestScore)
@@ -104,8 +107,15 @@ int minimax(char board[3][3], int depth, Players cPlayer)
         }
         return bestScore;
     }
+    return -1;
 }
 
+/**
+ * Calculates the next optimal move for the AI to take
+ *
+ * @param char[][], the actual gameboard
+ * @return pair<int, int> an x,y pair in the range of [0, 3][0, 3] of the AI's next move
+ */
 pair<int, int> Agent::calculateNextMove(char board[3][3])
 {
     int best = INT_MIN;
@@ -117,7 +127,7 @@ pair<int, int> Agent::calculateNextMove(char board[3][3])
             if (board[i][j] == ' ')
             {
                 board[i][j] = 'X';
-                int score = minimax(board, 0, MAXIMIZING);
+                int score = minimax(board, 0, MINIMIZING);
                 board[i][j] = ' ';
                 if (score > best)
                 {
